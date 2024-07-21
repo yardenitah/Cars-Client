@@ -16,19 +16,20 @@ const LoginScreen = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+  
     try {
       const response = await axios.post(`${apiUrl}/api/users/`, {
         email,
         password,
       });
-
+  
       if (response.data.success) {
-        navigate(`/welcome?name=${response.data.userName}`); // Navigate to the welcome screen with the user's name
+        navigate(`/welcome?name=${response.data.userName}`);
       } else {
         setErrorMessage(response.data.message || 'Login failed. Please try again.');
       }
     } catch (error) {
+      console.error('Error:', error); // Log the error
       setErrorMessage(error.response?.data?.message || 'An error occurred. Please try again.');
     }
   };
