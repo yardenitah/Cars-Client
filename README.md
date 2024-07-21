@@ -16,7 +16,7 @@ A platform that connects vehicle enthusiasts and people interested in the automo
 Run localy:
 
 ```bash
-      In the login screen.jsx delete ${apiBaseUrl}/ to run the program localy
+In the loginscreen.jsx delete ${apiBaseUrl}/ to run the program localy
 ```
 
 Clone the repository:
@@ -31,19 +31,19 @@ cd client
 Install dependencies:
 
 ```bash
-      npm install
+npm install
 ```
 
 Start the development server:
 
 ```bash
-    npm start
+npm start
 ```
 
 Linting:
 
 ```bash
-     npm run lint
+npm run lint
 ```
 
 Testing
