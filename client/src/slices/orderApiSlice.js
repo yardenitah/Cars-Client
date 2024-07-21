@@ -1,6 +1,6 @@
 // client/src/slices/orderApiSlice.js
-import { ORDERS_URL, PAYPAL_URL } from "../constants";
-import { apiSlice } from "./apiSlice";
+import { ORDERS_URL, PAYPAL_URL } from '../constants';
+import { apiSlice } from './apiSlice';
 
 //! injecting endpoints in to the main slice (API slice)
 export const orderApiSlice = apiSlice.injectEndpoints({
@@ -9,7 +9,7 @@ export const orderApiSlice = apiSlice.injectEndpoints({
       //! the mutation make a POST request with USERS_URL in the endpoint
       query: (order) => ({
         url: ORDERS_URL,
-        method: "POST",
+        method: 'POST',
         body: { ...order },
       }),
     }),
@@ -25,7 +25,7 @@ export const orderApiSlice = apiSlice.injectEndpoints({
     payOrder: builder.mutation({
       query: ({ orderId, details }) => ({
         url: `${ORDERS_URL}/${orderId}/pay`,
-        method: "PUT",
+        method: 'PUT',
         body: details,
       }),
     }),
@@ -54,7 +54,7 @@ export const orderApiSlice = apiSlice.injectEndpoints({
     deliverOrder: builder.mutation({
       query: (orderId) => ({
         url: `${ORDERS_URL}/${orderId}/deliver`,
-        method: "PUT",
+        method: 'PUT',
       }),
     }),
   }),

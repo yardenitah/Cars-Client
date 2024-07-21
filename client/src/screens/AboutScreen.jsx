@@ -1,6 +1,6 @@
 // client/src/screens/AboutScreen.js
-import React from "react";
-import { Container } from "react-bootstrap";
+import React from 'react';
+import { Container } from 'react-bootstrap';
 
 const AboutScreen = () => {
   return (

@@ -1,9 +1,11 @@
-import { Navbar, Nav, Container } from "react-bootstrap";
-import { FaUserAlt } from "react-icons/fa";
-import { ImProfile } from "react-icons/im";
-import { LinkContainer } from "react-router-bootstrap";
-import logo from "../assets/logo.png";
-import "../assets/style/index.css";
+// src/components/Header.jsx
+import React from 'react'; // Add this line
+import { Navbar, Nav, Container } from 'react-bootstrap';
+import { FaUserAlt } from 'react-icons/fa';
+import { ImProfile } from 'react-icons/im';
+import { LinkContainer } from 'react-router-bootstrap';
+import logo from '../assets/logo.png';
+import '../assets/style/index.css';
 
 const Header = () => {
   return (

@@ -1,6 +1,6 @@
 // client/src/slices/userApiSlice.js
-import { USERS_URL } from "../constants";
-import { apiSlice } from "./apiSlice";
+import { USERS_URL } from '../constants';
+import { apiSlice } from './apiSlice';
 
 //! injecting endpoints in to the main slice (API slice)
 export const userApiSlice = apiSlice.injectEndpoints({
@@ -9,7 +9,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
       //! the mutation make a post request with USERS_URL in the endpoint
       query: (data) => ({
         url: `${USERS_URL}/auth`,
-        method: "POST",
+        method: 'POST',
         body: data,
       }),
     }),
@@ -17,7 +17,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
     register: builder.mutation({
       query: (data) => ({
         url: `${USERS_URL}`,
-        method: "POST",
+        method: 'POST',
         body: data,
       }),
     }),
@@ -26,14 +26,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
       // logout for the server
       query: () => ({
         url: `${USERS_URL}/logout`,
-        method: "POST",
+        method: 'POST',
       }),
     }),
 
     profile: builder.mutation({
       query: (data) => ({
         url: `${USERS_URL}/profile`,
-        method: "PUT",
+        method: 'PUT',
         body: data,
       }),
     }),
@@ -42,14 +42,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: USERS_URL,
       }),
-      providesTags: ["Users"],
+      providesTags: ['Users'],
       keepUnusedDataFor: 5,
     }),
 
     deleteUser: builder.mutation({
       query: (userId) => ({
         url: `${USERS_URL}/${userId}`,
-        method: "DELETE",
+        method: 'DELETE',
       }),
     }),
 
@@ -63,10 +63,10 @@ export const userApiSlice = apiSlice.injectEndpoints({
     updateUser: builder.mutation({
       query: (data) => ({
         url: `${USERS_URL}/${data.userId}`,
-        method: "PUT",
+        method: 'PUT',
         body: data,
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ['User'],
     }),
   }),
 });

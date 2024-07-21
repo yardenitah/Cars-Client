@@ -1,24 +1,24 @@
 // client/src/screens/LoginScreen.jsx
-import React, { useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import FormContainer from "../components/FormContainer";
-import { IoEyeOffOutline } from "react-icons/io5";
-import { FaRegEye } from "react-icons/fa";
+import React, { useState } from 'react';
+import { Form, Button, Alert } from 'react-bootstrap';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import FormContainer from '../components/FormContainer';
+import { IoEyeOffOutline } from 'react-icons/io5';
+import { FaRegEye } from 'react-icons/fa';
 
 const LoginScreen = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("api/users/", {
+      const response = await axios.post('api/users/', {
         email,
         password,
       });
@@ -26,10 +26,10 @@ const LoginScreen = () => {
       if (response.data.success) {
         navigate(`/welcome?name=${response.data.userName}`); // Navigate to the welcome screen with the user's name
       } else {
-        setErrorMessage(response.data.message || "Login failed. Please try again.");
+        setErrorMessage(response.data.message || 'Login failed. Please try again.');
       }
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || "An error occurred. Please try again.");
+      setErrorMessage(error.response?.data?.message || 'An error occurred. Please try again.');
     }
   };
 
@@ -38,7 +38,7 @@ const LoginScreen = () => {
   };
 
   const passwordType = () => {
-    return showPassword ? "text" : "password";
+    return showPassword ? 'text' : 'password';
   };
 
   return (
@@ -57,7 +57,7 @@ const LoginScreen = () => {
         </Form.Group>
         <Form.Group controlId="password" className="my-3">
           <Form.Label onClick={passwordChangeHandler}>
-            Password{" "}
+            Password{' '}
             {showPassword ? (
               <FaRegEye className="mx-1" />
             ) : (
