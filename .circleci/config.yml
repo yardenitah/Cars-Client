@@ -10,13 +10,12 @@ workflows:
 jobs:
   build:
     executor: node/default  # Use the default Node.js executor from the orb
+    working_directory: ~/client
     steps:
       - checkout
       - run:
           name: Install dependencies
-          command:
-          cd client 
-          npm install
+          command: npm install
       - run:
           name: Verify Node.js and npm versions
           command: node -v && npm -v
