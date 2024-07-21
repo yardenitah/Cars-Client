@@ -5,15 +5,16 @@ orbs:
 jobs:
   build:
     executor: node/default
-    working_directory: ~/client  # Set the working directory to `client`
     steps:
       - checkout  # This checks out the code from your repository
       - run:
-          name: Verify Directory Structure
-          command: ls -la  # List files to verify that `client` and `package.json` exist
+          name: List Client Directory
+          command: ls -la client  # Verify that package.json is in the client directory
       - run:
           name: Install dependencies
-          command: npm install
+          command: |
+            cd client
+            npm install
       - run:
           name: Verify Node.js and npm versions
           command: |
@@ -21,10 +22,14 @@ jobs:
             npm -v
       - run:
           name: Run tests
-          command: npm run test
+          command: |
+            cd client
+            npm run test
       - run:
           name: Run lint
-          command: npm run lint
+          command: |
+            cd client
+            npm run lint
 
 workflows:
   my-workflow:
