@@ -13,11 +13,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: change directory
-          command: cd client
-      - run:
           name: Install dependencies
-          command: npm install
+          command:
+          cd client 
+          npm install
       - run:
           name: Verify Node.js and npm versions
           command: node -v && npm -v
