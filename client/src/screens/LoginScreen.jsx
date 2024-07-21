@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import axios from 'axios';
-import dotenv from '../../.env'
-dotenv.config();
 import { useNavigate } from 'react-router-dom';
 import FormContainer from '../components/FormContainer';
 import { IoEyeOffOutline } from 'react-icons/io5';
