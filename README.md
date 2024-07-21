@@ -13,6 +13,12 @@ A platform that connects vehicle enthusiasts and people interested in the automo
 
 ## Installation
 
+Run localy:
+
+```bash
+      In the login screen.jsx delete ${apiBaseUrl}/ to run the program localy
+```
+
 Clone the repository:
 
 ```bash
