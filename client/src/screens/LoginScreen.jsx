@@ -13,7 +13,7 @@ const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+  const apiBaseUrl = process.env.REACT_APP_API_URL;
 
   const submitHandler = async (e) => {
     e.preventDefault();
