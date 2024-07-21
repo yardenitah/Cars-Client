@@ -1,4 +1,3 @@
-// client/src/screens/LoginScreen.jsx
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import axios from 'axios';
@@ -13,22 +12,24 @@ const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+  
     try {
-      const response = await axios.post('api/users/', {
+      const response = await axios.post(`${apiUrl}/api/users/`, {
         email,
         password,
       });
-
+  
       if (response.data.success) {
-        navigate(`/welcome?name=${response.data.userName}`); // Navigate to the welcome screen with the user's name
+        navigate(`/welcome?name=${response.data.userName}`);
       } else {
         setErrorMessage(response.data.message || 'Login failed. Please try again.');
       }
     } catch (error) {
+      console.error('Error:', error); // Log the error
       setErrorMessage(error.response?.data?.message || 'An error occurred. Please try again.');
     }
   };
