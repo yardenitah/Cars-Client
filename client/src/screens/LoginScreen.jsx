@@ -13,12 +13,13 @@ const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+  
     try {
-      const response = await axios.post("api/users/", {
+      const response = await axios.post(`${apiBaseUrl}/api/users/`, {
         email,
         password,
       });
