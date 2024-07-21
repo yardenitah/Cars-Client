@@ -2,23 +2,23 @@ version: 2.1
 orbs:
   node: circleci/node@5
 
-workflows:
-  my-workflow:
-    jobs:
-      - build
-
 jobs:
   build:
-    executor: node/default  # Use the default Node.js executor from the orb
-    working_directory: ~/client
+    executor: node/default
+    working_directory: ~/client  # Set the working directory to `client`
     steps:
-      - checkout
+      - checkout  # This checks out the code from your repository
+      - run:
+          name: Verify Directory Structure
+          command: ls -la  # List files to verify that `client` and `package.json` exist
       - run:
           name: Install dependencies
           command: npm install
       - run:
           name: Verify Node.js and npm versions
-          command: node -v && npm -v
+          command: |
+            node -v
+            npm -v
       - run:
           name: Run tests
           command: npm run test
@@ -26,4 +26,7 @@ jobs:
           name: Run lint
           command: npm run lint
 
-          
+workflows:
+  my-workflow:
+    jobs:
+      - build
