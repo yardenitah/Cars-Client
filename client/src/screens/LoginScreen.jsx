@@ -1,4 +1,3 @@
-// client/src/screens/LoginScreen.jsx
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import axios from 'axios';
@@ -13,12 +12,13 @@ const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('api/users/', {
+      const response = await axios.post(`${apiUrl}/api/users/`, {
         email,
         password,
       });
