@@ -16,7 +16,7 @@ const LoginScreen = () => {
     e.preventDefault();
     
     try {
-      const response = await axios.post("/api/users", {
+      const response = await axios.post("/api/users/", {
         email,
         password,
       });
