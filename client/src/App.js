@@ -9,7 +9,7 @@ import Footer from "./components/Footer";
 import LoginScreen from "./screens/LoginScreen";
 import AboutScreen from "./screens/AboutScreen";
 import WelcomeScreen from "./screens/WelcomeScreen";
-
+import RegisterScreen from "./screens/RegisterScreen";
 const App = () => {
   return (
     <Router>
@@ -18,6 +18,7 @@ const App = () => {
         <Container>
           <Routes>
             <Route path="/" element={<LoginScreen />} />
+            <Route path="/register" element={<RegisterScreen />} />
             <Route path="/about" element={<AboutScreen />} />
             <Route path="/welcome" element={<WelcomeScreen />} />
           </Routes>

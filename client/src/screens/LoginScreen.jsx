@@ -1,8 +1,8 @@
 // client/src/screens/LoginScreen.jsx
 import React, { useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button, Alert , Row ,Col} from "react-bootstrap";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FormContainer from "../components/FormContainer";
 import { IoEyeOffOutline } from "react-icons/io5";
 import { FaRegEye } from "react-icons/fa";
@@ -75,6 +75,12 @@ const LoginScreen = () => {
           Sign in
         </Button>
       </Form>
+      <Row className="py-3">
+        <Col>
+          dont have account?
+          <Link to="/register">Register</Link>  
+        </Col>
+      </Row>
     </FormContainer>
   );
 };
