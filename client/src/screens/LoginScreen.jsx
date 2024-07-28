@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import FormContainer from "../components/FormContainer";
 import { IoEyeOffOutline } from "react-icons/io5";
 import { FaRegEye } from "react-icons/fa";
-import apiBaseUrl from "../constants.js";
+import apiBaseUrl from "../constants";
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

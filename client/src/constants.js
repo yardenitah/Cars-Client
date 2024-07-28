@@ -6,6 +6,7 @@ export const ORDERS_URL = "/api/orders";
 export const PAYPAL_URL = "/api/config/paypal";
 export const UPLOAD_URL = "/api/upload/";
 // for render use 
-export const apiBaseUrl = process.env.REACT_APP_API_URL;
+const apiBaseUrl = process.env.REACT_APP_API_URL;
+export default apiBaseUrl; 
 // for local use 
 // export const apiBaseUrl = "";
