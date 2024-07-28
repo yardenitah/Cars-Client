@@ -6,14 +6,13 @@ import { useNavigate } from "react-router-dom";
 import FormContainer from "../components/FormContainer";
 import { IoEyeOffOutline } from "react-icons/io5";
 import { FaRegEye } from "react-icons/fa";
-
+import apiBaseUrl from "../constants.js";
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-  const apiBaseUrl = process.env.REACT_APP_API_URL;
 
   const submitHandler = async (e) => {
     e.preventDefault();
