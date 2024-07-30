@@ -1,19 +1,22 @@
-// client/src/screens/RegisterScreen.jsx
-import React, { useState } from "react";
-import { Form, Button, Alert, ProgressBar , Row ,Col } from "react-bootstrap";
-import axios from "axios";
-import { useNavigate,Link } from "react-router-dom";
-import FormContainer from "../components/FormContainer";
-import apiBaseUrl from "../constants";
-import { toast } from "react-toastify";
+import React, { useState } from 'react';
+import { Form, Button, Alert, ProgressBar, Row, Col } from 'react-bootstrap';
+import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../slices/authSlice';
+import FormContainer from '../components/FormContainer';
+import apiBaseUrl from '../constants';
+import { toast } from 'react-toastify';
+
 const RegisterScreen = () => {
-  const [userName, setUserName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [userName, setUserName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [passwordStrength, setPasswordStrength] = useState(0);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const checkPasswordStrength = (password) => {
     let strength = 0;
@@ -29,7 +32,7 @@ const RegisterScreen = () => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      toast.error("Passwords do not match");
+      toast.error('Passwords do not match');
       return;
     }
 
@@ -41,12 +44,13 @@ const RegisterScreen = () => {
       });
 
       if (response.data.success) {
+        dispatch(setUser(response.data));
         navigate(`/welcome`);
       } else {
-        setErrorMessage(response.data.message || "Registration failed. Please try again.");
+        setErrorMessage(response.data.message || 'Registration failed. Please try again.');
       }
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || "An error occurred. Please try again.");
+      setErrorMessage(error.response?.data?.message || 'An error occurred. Please try again.');
     }
   };
 
@@ -86,7 +90,7 @@ const RegisterScreen = () => {
           ></Form.Control>
           <ProgressBar
             now={(passwordStrength / 5) * 100}
-            variant={passwordStrength > 2 ? "success" : "danger"}
+            variant={passwordStrength > 2 ? 'success' : 'danger'}
             className="mt-2"
           />
         </Form.Group>
@@ -105,8 +109,7 @@ const RegisterScreen = () => {
       </Form>
       <Row className="py-3">
         <Col>
-          already have account?
-          <Link to="/">Login</Link>  
+          Already have an account? <Link to="/">Login</Link>
         </Col>
       </Row>
     </FormContainer>

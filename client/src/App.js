@@ -10,7 +10,10 @@ import LoginScreen from "./screens/LoginScreen";
 import AboutScreen from "./screens/AboutScreen";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import RegisterScreen from "./screens/RegisterScreen";
-const App = () => {
+import ProfileScreen from "./screens/profileScreen";
+import PrivateRoute from "./components/PrivateRoute";
+
+const App = () => { 
   return (
     <Router>
       <Header />
@@ -21,6 +24,7 @@ const App = () => {
             <Route path="/register" element={<RegisterScreen />} />
             <Route path="/about" element={<AboutScreen />} />
             <Route path="/welcome" element={<WelcomeScreen />} />
+            <Route path="/profile" element={<ProfileScreen />}/>
           </Routes>
         </Container>
       </main>
@@ -31,3 +35,5 @@ const App = () => {
 };
 
 export default App;
+
+

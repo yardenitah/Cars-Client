@@ -1,13 +1,25 @@
 // src/components/Header.jsx
 import React from 'react'; // Add this line
 import { Navbar, Nav, Container } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearUser } from '../slices/authSlice';
+import { useNavigate } from 'react-router-dom';
 import { FaUserAlt } from 'react-icons/fa';
 import { ImProfile } from 'react-icons/im';
 import { LinkContainer } from 'react-router-bootstrap';
 import logo from '../assets/logo.png';
 import '../assets/style/index.css';
 
+
 const Header = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const auth = useSelector((state) => state.auth);
+
+  const logoutHandler = () => {
+    dispatch(clearUser());
+    navigate('/');
+  };
   return (
     <header>
       <Navbar bg="primary" variant="dark" expand="md" collapseOnSelect>
@@ -21,18 +33,31 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <LinkContainer to="/about">
-                <Nav.Link>
-                  <ImProfile className="headerFa" />
-                  About
-                </Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/">
-                <Nav.Link>
-                  <FaUserAlt className="headerFa" />
-                  Sign In
-                </Nav.Link>
-              </LinkContainer>
+            {auth.isAuthenticated ? (
+                <>
+                  <LinkContainer to="/profile">
+                    <Nav.Link>
+                      <i className="fas fa-user"></i> {auth.user.userName}
+                    </Nav.Link>
+                  </LinkContainer>
+                  <Nav.Link onClick={logoutHandler}>
+                    <i className="fas fa-sign-out-alt"></i> Logout
+                  </Nav.Link>
+                </>
+              ) : (
+                <>
+                  <LinkContainer to="/">
+                    <Nav.Link>
+                      <i className="fas fa-sign-in-alt"></i> Login
+                    </Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to="/register">
+                    <Nav.Link>
+                      <i className="fas fa-user-plus"></i> Register
+                    </Nav.Link>
+                  </LinkContainer>
+                </>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -42,3 +67,4 @@ const Header = () => {
 };
 
 export default Header;
+
