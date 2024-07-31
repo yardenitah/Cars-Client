@@ -1,3 +1,4 @@
+// client/src/screens/LoginScreen.jsx
 import React, { useState } from 'react';
 import { Form, Button, Alert, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
@@ -8,6 +9,7 @@ import FormContainer from '../components/FormContainer';
 import { IoEyeOffOutline } from 'react-icons/io5';
 import { FaRegEye } from 'react-icons/fa';
 import apiBaseUrl from '../constants';
+
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -25,7 +27,6 @@ const LoginScreen = () => {
         email,
         password,
       });
-
       if (response.data.success) {
         dispatch(setUser(response.data));
         navigate(`/welcome?name=${response.data.userName}`); // Navigate to the welcome screen with the user's name

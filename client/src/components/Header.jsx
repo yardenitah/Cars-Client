@@ -4,8 +4,6 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearUser } from '../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
-import { FaUserAlt } from 'react-icons/fa';
-import { ImProfile } from 'react-icons/im';
 import { LinkContainer } from 'react-router-bootstrap';
 import logo from '../assets/logo.png';
 import '../assets/style/index.css';
@@ -24,7 +22,7 @@ const Header = () => {
     <header>
       <Navbar bg="primary" variant="dark" expand="md" collapseOnSelect>
         <Container>
-          <LinkContainer to="/">
+          <LinkContainer to="/welcome">
             <Navbar.Brand>
               <img src={logo} alt="VL" className="navbar-logo" />
               MotorMate
@@ -35,7 +33,7 @@ const Header = () => {
             <Nav className="ms-auto">
             {auth.isAuthenticated ? (
                 <>
-                  <LinkContainer to="/profile">
+                  <LinkContainer to={`/profile/${auth.user._id}`}>
                     <Nav.Link>
                       <i className="fas fa-user"></i> {auth.user.userName}
                     </Nav.Link>
