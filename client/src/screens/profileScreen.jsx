@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
-import { clearUser } from '../slices/authSlice';
+import { clearUser, setUser } from '../slices/authSlice';
 import UploadForm from '../components/uploadForm';
 import '../assets/style/profileScreen.css';
 
 const ProfileScreen = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  const [profileUser, setProfileUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
@@ -24,7 +24,7 @@ const ProfileScreen = () => {
     const fetchUser = async () => {
       try {
         const { data } = await axios.get(`/api/users/${userId}`, { withCredentials: true });
-        setUser(data);
+        setProfileUser(data);
         setUserName(data.userName);
         setEmail(data.email);
         setImg(data.img);
@@ -40,10 +40,10 @@ const ProfileScreen = () => {
 
   const handleCancelClick = () => {
     setIsEditing(false);
-    if (user) {
-      setUserName(user.userName);
-      setEmail(user.email);
-      setImg(user.img);
+    if (profileUser) {
+      setUserName(profileUser.userName);
+      setEmail(profileUser.email);
+      setImg(profileUser.img);
     }
   };
 
@@ -53,7 +53,7 @@ const ProfileScreen = () => {
       const response = await axios.put('/api/users/profile', { userName, email, img }, {
         withCredentials: true,
       });
-      setUser(response.data);
+      setProfileUser(response.data);
       alert('Success');
       dispatch(setUser(response.data));
       setIsEditing(false);
@@ -105,25 +105,77 @@ const ProfileScreen = () => {
     }
   };
 
+  const handleFollow = async () => {
+    try {
+      const response = await axios.put(`/api/users/follow/${profileUser._id}`, {}, { withCredentials: true });
+      alert('Followed successfully');
+      setProfileUser({ ...profileUser, following: response.data.following });
+      dispatch(setUser({ ...loggedInUser, following: response.data.following }));
+    } catch (error) {
+      console.error('Error following user:', error);
+      if (error.response && error.response.status === 401) {
+        alert('Unauthorized. Please log in again.');
+      } else {
+        alert('Error following user');
+      }
+    }
+  };
+
+  const handleUnfollow = async () => {
+    try {
+      const response = await axios.put(`/api/users/unfollow/${profileUser._id}`, {}, { withCredentials: true });
+      alert('Unfollowed successfully');
+      setProfileUser({ ...profileUser, following: response.data.following });
+      dispatch(setUser({ ...loggedInUser, following: response.data.following }));
+    } catch (error) {
+      console.error('Error unfollowing user:', error);
+      if (error.response && error.response.status === 401) {
+        alert('Unauthorized. Please log in again.');
+      } else {
+        alert('Error unfollowing user');
+      }
+    }
+  };
   const handleImageError = (e) => {
     e.target.src = '/defaultprofile.png';
   };
+  const isFollowing = loggedInUser?.following?.some(followedUserId => followedUserId.toString() === profileUser?._id.toString());
+  console.log('loggedInUser:', loggedInUser);
+  console.log('profileUser:', profileUser);
+  console.log('isFollowing:', isFollowing);
 
   return (
     <div className="profile-container">
-      {user ? (
+      {profileUser ? (
         <>
-          <h1>{user.userName}</h1>
-          <p>Email: {user.email}</p>
+          <h1>{profileUser.userName}</h1>
+          <p>Email: {profileUser.email}</p>
           <img 
-            src={`/api/uploads/${user.img}`} 
+            src={`/api/uploads/${profileUser.img}`} 
             alt="Profile" 
             className="profile-pic"
             onError={handleImageError}
           />
-          <p>Following: {user.following.length}</p>
+          <p>Following: {profileUser.following.length}</p>
+          <ul>
+            {profileUser.following.map(followedUser => (
+              <li key={followedUser._id}>
+                <Link to={`/profile/${followedUser._id}`}>{followedUser.userName}</Link>
+              </li>
+            ))}
+          </ul>
 
-          {loggedInUser && loggedInUser._id === user._id && (
+          {loggedInUser && loggedInUser._id !== profileUser._id && (
+            <>
+              {isFollowing ? (
+                <button onClick={handleUnfollow}>Unfollow</button>
+              ) : (
+                <button onClick={handleFollow}>Follow</button>
+              )}
+            </>
+          )}
+
+          {loggedInUser && loggedInUser._id === profileUser._id && (
             <>
               {isEditing ? (
                 <>

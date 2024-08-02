@@ -1,12 +1,15 @@
-// client/src/components/PrivateRoute.jsx
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const PrivateRoute = () => {
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, status } = useSelector((state) => state.auth);
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/" />;
+  if (status === 'loading') {
+    return <div>Loading...</div>; // Show loading state while authentication status is being determined
+  }
+
+  return isAuthenticated ? <Outlet /> : <Navigate to="/welcome" />;
 };
 
 export default PrivateRoute;

@@ -2,15 +2,15 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export const loadUser = createAsyncThunk('auth/loadUser', async () => {
-  const response = await axios.get('/api/users/profile');
+  const response = await axios.get('/api/users/profile', { withCredentials: true });
   console.log('loadUser response:', response.data);
   return response.data;
 });
 
 const initialState = {
-  user: JSON.parse(localStorage.getItem('user')) || null,
-  isAuthenticated: !!localStorage.getItem('user'),
-  status: 'idle',
+  user: null,
+  isAuthenticated: false,
+  status: 'idle', // Add status for loading state
   error: null,
 };
 
@@ -21,26 +21,23 @@ const authSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
       state.isAuthenticated = true;
-      localStorage.setItem('user', JSON.stringify(action.payload));
       console.log('setUser:', action.payload);
     },
     clearUser: (state) => {
       state.user = null;
       state.isAuthenticated = false;
-      localStorage.removeItem('user');
       console.log('clearUser');
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(loadUser.pending, (state) => {
-        state.status = 'loading';
+        state.status = 'loading'; // Set status to loading when pending
       })
       .addCase(loadUser.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.user = action.payload;
         state.isAuthenticated = true;
-        localStorage.setItem('user', JSON.stringify(action.payload));
         console.log('loadUser fulfilled:', action.payload);
       })
       .addCase(loadUser.rejected, (state, action) => {

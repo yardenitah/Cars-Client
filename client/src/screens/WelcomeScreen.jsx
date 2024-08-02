@@ -1,16 +1,17 @@
+// client/src/screens/WelcomeScreen.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import UploadForm from '../components/uploadForm';
-import { useAuth } from '../context/AuthContext'; // Import the AuthContext
+import PostList from '../components/PostList';
+import PostForm from '../components/PostForm';
+import FeedbackForm from '../components/FeedbackForm';
+import { useAuth } from '../context/AuthContext';
 import '../assets/style/welcomeScreen.css';
 
 const WelcomeScreen = () => {
   const [posts, setPosts] = useState([]);
-  const [feedback, setFeedback] = useState('');
-  const [newPost, setNewPost] = useState({ content: '', img: null });
   const [showPostForm, setShowPostForm] = useState(false);
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
-  const { user } = useAuth(); // Get the current user from the AuthContext
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -25,26 +26,16 @@ const WelcomeScreen = () => {
     fetchPosts();
   }, []);
 
-  const submitFeedback = async () => {
+  const submitFeedback = async (content) => {
     try {
-      await axios.post('/api/feedback', { feedback });
-      setFeedback('');
+      await axios.post('/api/feedback', { content });
       alert('Feedback submitted successfully');
     } catch (error) {
       alert('Error submitting feedback');
     }
   };
 
-  const handlePostChange = (e) => {
-    setNewPost({ ...newPost, [e.target.name]: e.target.value });
-  };
-
-  const handleFileUpload = (filePath) => {
-    setNewPost({ ...newPost, img: filePath });
-  };
-
-  const submitPost = async (e) => {
-    e.preventDefault();
+  const addPost = async (newPost) => {
     const formData = new FormData();
     formData.append('content', newPost.content);
     formData.append('image', newPost.img);
@@ -54,7 +45,6 @@ const WelcomeScreen = () => {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       setPosts([...posts, data]);
-      setNewPost({ content: '', img: null });
       setShowPostForm(false);
       alert('Post submitted successfully');
     } catch (error) {
@@ -64,8 +54,9 @@ const WelcomeScreen = () => {
 
   const likePost = async (id) => {
     try {
+      console.log('Liking post with ID:', id);
       const { data } = await axios.put(`/api/posts/${id}/like`);
-      setPosts(posts.map((post) => (post._id === id ? data : post)));
+      setPosts((prevPosts) => prevPosts.map((post) => (post._id === id ? data : post)));
     } catch (error) {
       console.error('Error liking post:', error);
     }
@@ -73,10 +64,12 @@ const WelcomeScreen = () => {
 
   const deletePost = async (id) => {
     try {
+      console.log('Attempting to delete post with ID:', id);
       await axios.delete(`/api/posts/${id}`);
-      setPosts(posts.filter((post) => post._id !== id));
+      setPosts((prevPosts) => prevPosts.filter((post) => post._id !== id));
       alert('Post deleted successfully');
     } catch (error) {
+      console.error('Error deleting post:', error);
       alert('Error deleting post');
     }
   };
@@ -90,32 +83,8 @@ const WelcomeScreen = () => {
             +
           </button>
         </h1>
-        {showPostForm && (
-          <div className="post-form">
-            <input
-              type="text"
-              name="content"
-              value={newPost.content}
-              onChange={handlePostChange}
-              placeholder="New post content"
-            />
-            <UploadForm setImg={handleFileUpload} />
-            <button onClick={submitPost}>Add Post</button>
-          </div>
-        )}
-        <ul>
-          {posts.map((post) => (
-            <li key={post._id}>
-              <p>{post.content}</p>
-              {post.image && <img src={`/api/uploads/${post.image}`} alt="Post" />}
-              <p>Likes: {post.likes.length}</p>
-              <button onClick={() => likePost(post._id)}>Like</button>
-              {user && post.user._id === user._id && ( // Check if the current user is the author
-                <button onClick={() => deletePost(post._id)}>Delete</button>
-              )}
-            </li>
-          ))}
-        </ul>
+        {showPostForm && <PostForm addPost={addPost} />}
+        <PostList posts={posts} user={user} likePost={likePost} deletePost={deletePost} />
       </div>
       <div className="feedback-section">
         <h2>
@@ -124,16 +93,7 @@ const WelcomeScreen = () => {
             +
           </button>
         </h2>
-        {showFeedbackForm && (
-          <div className="feedback-form">
-            <textarea
-              value={feedback}
-              onChange={(e) => setFeedback(e.target.value)}
-              placeholder="Write your feedback here..."
-            />
-            <button onClick={submitFeedback}>Submit Feedback</button>
-          </div>
-        )}
+        {showFeedbackForm && <FeedbackForm submitFeedback={submitFeedback} />}
       </div>
     </div>
   );

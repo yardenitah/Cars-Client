@@ -1,3 +1,4 @@
+// client/src/slices/auth.js
 import axios from 'axios';
 import { setUser, clearUser } from '../slices/authSlice'; // Adjust the import path as necessary
 
