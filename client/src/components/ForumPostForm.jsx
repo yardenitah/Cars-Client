@@ -20,13 +20,17 @@ const ForumPostForm = ({ fetchForumPosts }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
-        type="text"
+      <select
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder="Title"
         required
-      />
+      >
+        <option value="" disabled>Select a category</option>
+        <option value="Recommendation">Recommendation</option>
+        <option value="Advice">Advice</option>
+        <option value="Question">Question</option>
+        <option value="Problem">Problem</option>
+      </select>
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}

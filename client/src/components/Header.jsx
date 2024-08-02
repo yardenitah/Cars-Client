@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { clearUser } from '../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
+import NotificationIcon from './notificationIcon';
 import logo from '../assets/logo.png';
 import '../assets/style/index.css';
 
@@ -43,6 +44,7 @@ const Header = () => {
                       <i className="fas fa-user"></i> {auth.user.userName}
                     </Nav.Link>
                   </LinkContainer>
+                  <NotificationIcon />
                   <Nav.Link onClick={logoutHandler}>
                     <i className="fas fa-sign-out-alt"></i> Logout
                   </Nav.Link>

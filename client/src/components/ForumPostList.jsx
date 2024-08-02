@@ -49,7 +49,16 @@ const ForumPostList = ({ forumPosts, setForumPosts }) => {
       console.error('Error editing post:', error);
     }
   };
-
+  const handleLikePost = async (postId) => {
+    try {
+      const { data: updatedPost } = await axios.put(`/api/forum/${postId}/like`, {}, {
+        headers: { Authorization: `Bearer ${auth.user.token}` },
+      });
+      setForumPosts(forumPosts.map(post => post._id === postId ? updatedPost : post));
+    } catch (error) {
+      console.error("Error liking post:", error);
+    }
+  };
   return (
     <div className="forum-post-list">
       {forumPosts.length === 0 ? (
@@ -67,6 +76,9 @@ const ForumPostList = ({ forumPosts, setForumPosts }) => {
             ) : (
               <>
                 <p>{post.content}</p>
+                <button onClick={() => handleLikePost(post._id)}>
+                  {post.likes.includes(auth.user._id) ? 'Unlike' : 'Like'} ({post.likes.length})
+                </button>
                 {auth.user._id === post.user._id && (
                   <>
                     <button onClick={() => handleEditPost(post)}>Edit</button>

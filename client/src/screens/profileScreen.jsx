@@ -137,7 +137,7 @@ const ProfileScreen = () => {
     }
   };
   const handleImageError = (e) => {
-    e.target.src = '/defaultprofile.png';
+    e.target.src = '../../uploads/defaultprofile.png';
   };
   const isFollowing = loggedInUser?.following?.some(followedUserId => followedUserId.toString() === profileUser?._id.toString());
   console.log('loggedInUser:', loggedInUser);

@@ -8,11 +8,14 @@ import '../assets/style/Forum.css';
 const Forum = () => {
   const [forumPosts, setForumPosts] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [category, setCategory] = useState(''); // State to hold selected category
   const auth = useSelector((state) => state.auth);
 
-  const fetchForumPosts = async () => {
+  const fetchForumPosts = async (category = '') => {
     try {
-      const { data } = await axios.get('/api/forum');
+      const { data } = await axios.get('/api/forum', {
+        params: { category },
+      });
       console.log("Forum - Fetched Posts:", data);
       setForumPosts(data);
     } catch (error) {
@@ -28,6 +31,11 @@ const Forum = () => {
     setShowForm(!showForm);
   };
 
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
+    fetchForumPosts(e.target.value);
+  };
+
   return (
     <div className="forum">
       <h1>Forum</h1>
@@ -40,6 +48,20 @@ const Forum = () => {
           {showForm && <ForumPostForm fetchForumPosts={fetchForumPosts} />}
         </>
       )}
+      <div>
+        <label htmlFor="category-filter">Filter by category: </label>
+        <select
+          id="category-filter"
+          value={category}
+          onChange={handleCategoryChange}
+        >
+          <option value="">All</option>
+          <option value="Recommendation">Recommendation</option>
+          <option value="Advice">Advice</option>
+          <option value="Question">Question</option>
+          <option value="Problem">Problem</option>
+        </select>
+      </div>
       <ForumPostList forumPosts={forumPosts} setForumPosts={setForumPosts} />
     </div>
   );
