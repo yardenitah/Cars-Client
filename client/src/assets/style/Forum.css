@@ -1,0 +1,144 @@
+/* client/src/assets/style/Forum.css */
+.forum {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .forum h1 {
+    text-align: center;
+  }
+  
+  .forum p {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .toggle-form-button {
+    display: block;
+    margin: 0 auto 20px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .toggle-form-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .forum-post-list {
+    margin-top: 20px;
+  }
+  
+  .forum-post {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  
+  .forum-post h2 {
+    margin: 0;
+    font-size: 1.5em;
+  }
+  
+  .forum-post p {
+    margin: 10px 0;
+  }
+  
+  .forum-post small {
+    display: block;
+    text-align: right;
+    color: #666;
+  }
+  
+  form {
+    margin-bottom: 20px;
+  }
+  
+  form div {
+    margin-bottom: 10px;
+  }
+  
+  form label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  form input,
+  form textarea {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  
+  form button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  form button:hover {
+    background-color: #0056b3;
+  }
+  /* client/src/assets/style/Forum.css */
+/* Add these new styles */
+.comment-list {
+    margin-top: 10px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+  }
+  
+  .comment {
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+  }
+  
+  .comment p {
+    margin: 0;
+  }
+  
+  .comment small {
+    display: block;
+    text-align: right;
+    color: #666;
+  }
+  
+  form {
+    margin-bottom: 20px;
+  }
+  
+  form div {
+    margin-bottom: 10px;
+  }
+  
+  form label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  form input,
+  form textarea {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  
+  form button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  form button:hover {
+    background-color: #0056b3;
+  }

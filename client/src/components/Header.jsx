@@ -25,7 +25,7 @@ const Header = () => {
           <LinkContainer to="/welcome">
             <Navbar.Brand>
               <img src={logo} alt="VL" className="navbar-logo" />
-              MotorMate
+              SocialCars
             </Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -33,6 +33,11 @@ const Header = () => {
             <Nav className="ms-auto">
             {auth.isAuthenticated ? (
                 <>
+                  <LinkContainer to="/forum">
+                    <Nav.Link>
+                      <i className="fas fa-comments"></i> Forum
+                    </Nav.Link>
+                  </LinkContainer>
                   <LinkContainer to={`/profile/${auth.user._id}`}>
                     <Nav.Link>
                       <i className="fas fa-user"></i> {auth.user.userName}

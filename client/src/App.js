@@ -12,6 +12,7 @@ import AboutScreen from "./screens/AboutScreen";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import ProfileScreen from "./screens/profileScreen";
+import ForumScreen from "./screens/forumScreen";
 import loadUser from "./slices/auth";
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -29,6 +30,9 @@ const App = () => {
       <main className="py-3">
         <Container>
           <Routes>
+          <Route element={<PrivateRoute />}>
+              <Route path="/forum" element={<ForumScreen />} />
+            </Route>
             <Route path="/" element={<LoginScreen />} />
             <Route path="/register" element={<RegisterScreen />} />
             <Route path="/about" element={<AboutScreen />} />
