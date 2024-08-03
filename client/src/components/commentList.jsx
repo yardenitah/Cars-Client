@@ -2,16 +2,17 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import apiBaseUrl from '../constants';
 
 const CommentList = ({ comments, forumPostId, updateComments }) => {
   const auth = useSelector((state) => state.auth);
 
   const handleDelete = async (commentId) => {
     try {
-      await axios.delete(`/api/comments/${forumPostId}/comments/${commentId}`, {
+      await axios.delete(`${apiBaseUrl}/api/comments/${forumPostId}/comments/${commentId}`, {
         headers: { Authorization: `Bearer ${auth.user.token}` },
       });
-      const { data: updatedComments } = await axios.get(`/api/comments/${forumPostId}/comments`);
+      const { data: updatedComments } = await axios.get(`${apiBaseUrl}/api/comments/${forumPostId}/comments`);
       updateComments(forumPostId, updatedComments);
     } catch (error) {
       console.error("Error deleting comment:", error);
@@ -20,10 +21,10 @@ const CommentList = ({ comments, forumPostId, updateComments }) => {
 
   const handleEdit = async (commentId, content) => {
     try {
-      await axios.put(`/api/comments/${forumPostId}/comments/${commentId}`, { content }, {
+      await axios.put(`${apiBaseUrl}/api/comments/${forumPostId}/comments/${commentId}`, { content }, {
         headers: { Authorization: `Bearer ${auth.user.token}` },
       });
-      const { data: updatedComments } = await axios.get(`/api/comments/${forumPostId}/comments`);
+      const { data: updatedComments } = await axios.get(`${apiBaseUrl}/api/comments/${forumPostId}/comments`);
       updateComments(forumPostId, updatedComments);
     } catch (error) {
       console.error("Error updating comment:", error);
@@ -31,10 +32,10 @@ const CommentList = ({ comments, forumPostId, updateComments }) => {
   };
   const handleLike = async (commentId) => {
     try {
-      await axios.put(`/api/comments/${forumPostId}/comments/${commentId}/like`, {}, {
+      await axios.put(`${apiBaseUrl}/api/comments/${forumPostId}/comments/${commentId}/like`, {}, {
         headers: { Authorization: `Bearer ${auth.user.token}` },
       });
-      const { data: updatedComments } = await axios.get(`/api/comments/${forumPostId}/comments`);
+      const { data: updatedComments } = await axios.get(`${apiBaseUrl}/api/comments/${forumPostId}/comments`);
       updateComments(forumPostId, updatedComments);
     } catch (error) {
       console.error("Error liking comment:", error);

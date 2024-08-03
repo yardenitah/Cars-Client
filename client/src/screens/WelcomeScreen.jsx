@@ -7,6 +7,7 @@ import EventList from '../components/eventList';
 import EventForm from '../components/eventForm';
 import { useAuth } from '../context/AuthContext';
 import '../assets/style/welcomeScreen.css';
+import apiBaseUrl from '../constants';
 
 const WelcomeScreen = () => {
   const [posts, setPosts] = useState([]);
@@ -19,7 +20,7 @@ const WelcomeScreen = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const { data } = await axios.get('/api/posts');
+        const { data } = await axios.get(`${apiBaseUrl}/api/posts`);
         setPosts(data);
       } catch (error) {
         console.error('Error fetching posts:', error);
@@ -28,7 +29,7 @@ const WelcomeScreen = () => {
 
     const fetchEvents = async () => {
       try {
-        const { data } = await axios.get('/api/events');
+        const { data } = await axios.get(`${apiBaseUrl}/api/events`);
         setEvents(data);
       } catch (error) {
         console.error('Error fetching events:', error);
@@ -41,7 +42,7 @@ const WelcomeScreen = () => {
 
   const submitFeedback = async (content) => {
     try {
-      await axios.post('/api/feedback', { content });
+      await axios.post(`${apiBaseUrl}/api/feedback`, { content });
       alert('Feedback submitted successfully');
     } catch (error) {
       alert('Error submitting feedback');
@@ -54,7 +55,7 @@ const WelcomeScreen = () => {
     formData.append('image', newPost.img);
 
     try {
-      const { data } = await axios.post('/api/posts/post', formData, {
+      const { data } = await axios.post(`${apiBaseUrl}/api/posts/post`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       setPosts([...posts, data]);
@@ -67,7 +68,7 @@ const WelcomeScreen = () => {
 
   const editPost = async (postId, updatedPost) => {
     try {
-      const { data } = await axios.put(`/api/posts/${postId}`, updatedPost, {
+      const { data } = await axios.put(`${apiBaseUrl}/api/posts/${postId}`, updatedPost, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       setPosts((prevPosts) => prevPosts.map((p) => (p._id === postId ? data : p)));
@@ -80,7 +81,7 @@ const WelcomeScreen = () => {
 
   const likePost = async (id) => {
     try {
-      const { data } = await axios.put(`/api/posts/${id}/like`);
+      const { data } = await axios.put(`${apiBaseUrl}/api/posts/${id}/like`);
       setPosts((prevPosts) => prevPosts.map((post) => (post._id === id ? data : post)));
     } catch (error) {
       console.error('Error liking post:', error);
@@ -89,7 +90,7 @@ const WelcomeScreen = () => {
 
   const deletePost = async (id) => {
     try {
-      await axios.delete(`/api/posts/${id}`);
+      await axios.delete(`${apiBaseUrl}/api/posts/${id}`);
       setPosts((prevPosts) => prevPosts.filter((post) => post._id !== id));
       alert('Post deleted successfully');
     } catch (error) {
@@ -106,7 +107,7 @@ const WelcomeScreen = () => {
     formData.append('image', newEvent.img);
 
     try {
-      const { data } = await axios.post('/api/events', formData, {
+      const { data } = await axios.post(`${apiBaseUrl}/api/events`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       setEvents([...events, data]);
@@ -119,7 +120,7 @@ const WelcomeScreen = () => {
 
   const editEvent = async (eventId, updatedEvent) => {
     try {
-      const { data } = await axios.put(`/api/events/${eventId}`, updatedEvent, {
+      const { data } = await axios.put(`${apiBaseUrl}/api/events/${eventId}`, updatedEvent, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       setEvents((prevEvents) => prevEvents.map((e) => (e._id === eventId ? data : e)));
@@ -132,7 +133,7 @@ const WelcomeScreen = () => {
 
   const deleteEvent = async (eventId) => {
     try {
-      await axios.delete(`/api/events/${eventId}`);
+      await axios.delete(`${apiBaseUrl}/api/events/${eventId}`);
       setEvents((prevEvents) => prevEvents.filter((event) => event._id !== eventId));
       alert('Event deleted successfully');
     } catch (error) {

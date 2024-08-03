@@ -3,6 +3,7 @@ import CommentList from './commentList';
 import CommentForm from './commentForm';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import apiBaseUrl from '../constants';
 
 const ForumPostList = ({ forumPosts, setForumPosts, fetchForumPosts }) => {
   const auth = useSelector((state) => state.auth);
@@ -18,7 +19,7 @@ const ForumPostList = ({ forumPosts, setForumPosts, fetchForumPosts }) => {
 
   const handleDeletePost = async (postId) => {
     try {
-      await axios.delete(`/api/forum/${postId}`, {
+      await axios.delete(`${apiBaseUrl}/api/forum/${postId}`, {
         headers: {
           Authorization: `Bearer ${auth.user.token}`,
         },
@@ -36,7 +37,7 @@ const ForumPostList = ({ forumPosts, setForumPosts, fetchForumPosts }) => {
 
   const handleSaveEdit = async (postId) => {
     try {
-      const { data: updatedPost } = await axios.put(`/api/forum/${postId}`, { content: editContent }, {
+      const { data: updatedPost } = await axios.put(`${apiBaseUrl}/api/forum/${postId}`, { content: editContent }, {
         headers: {
           Authorization: `Bearer ${auth.user.token}`,
         },
@@ -50,7 +51,7 @@ const ForumPostList = ({ forumPosts, setForumPosts, fetchForumPosts }) => {
 
   const handleLikePost = async (postId) => {
     try {
-      const { data: updatedPost } = await axios.put(`/api/forum/${postId}/like`, {}, {
+      const { data: updatedPost } = await axios.put(`${apiBaseUrl}/api/forum/${postId}/like`, {}, {
         headers: { Authorization: `Bearer ${auth.user.token}` },
       });
       setForumPosts(forumPosts.map(post => post._id === postId ? updatedPost : post));
@@ -61,7 +62,7 @@ const ForumPostList = ({ forumPosts, setForumPosts, fetchForumPosts }) => {
 
   const handleStickPost = async (postId, isSticky) => {
     try {
-      const { data: updatedPost } = await axios.put(`/api/forum/${postId}`, { is_sticky: isSticky }, {
+      const { data: updatedPost } = await axios.put(`${apiBaseUrl}/api/forum/${postId}`, { is_sticky: isSticky }, {
         headers: { Authorization: `Bearer ${auth.user.token}` },
       });
       fetchForumPosts(); // Re-fetch forum posts to update the order

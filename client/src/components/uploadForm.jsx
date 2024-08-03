@@ -1,6 +1,7 @@
 // client/src/components/UploadForm.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
+import apiBaseUrl from '../constants';
 
 const UploadForm = ({ setImg }) => {
   const [file, setFile] = useState(null);
@@ -15,7 +16,7 @@ const UploadForm = ({ setImg }) => {
     formData.append('image', file);
 
     try {
-      const { data } = await axios.post('/upload', formData, {
+      const { data } = await axios.post(`${apiBaseUrl}/upload`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       setImg(data.filePath); // Assuming the server returns the file path in 'data.filePath'

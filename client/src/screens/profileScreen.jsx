@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { clearUser, setUser } from '../slices/authSlice';
 import UploadForm from '../components/uploadForm';
 import '../assets/style/profileScreen.css';
+import apiBaseUrl from '../constants';
 
 const ProfileScreen = () => {
   const { userId } = useParams();
@@ -23,7 +24,7 @@ const ProfileScreen = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const { data } = await axios.get(`/api/users/${userId}`, { withCredentials: true });
+        const { data } = await axios.get(`${apiBaseUrl}/api/users/${userId}`, { withCredentials: true });
         setProfileUser(data);
         setUserName(data.userName);
         setEmail(data.email);
@@ -50,7 +51,7 @@ const ProfileScreen = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put('/api/users/profile', { userName, email, img }, {
+      const response = await axios.put(`${apiBaseUrl}/api/users/profile`, { userName, email, img }, {
         withCredentials: true,
       });
       setProfileUser(response.data);
@@ -72,7 +73,7 @@ const ProfileScreen = () => {
       return;
     }
     try {
-      await axios.put('/api/users/change-password', { oldPassword, newPassword }, {
+      await axios.put(`${apiBaseUrl}/api/users/change-password`, { oldPassword, newPassword }, {
         withCredentials: true,
       });
       alert('Password updated successfully');
@@ -94,7 +95,7 @@ const ProfileScreen = () => {
       return;
     }
     try {
-      await axios.delete('/api/users/profile', {
+      await axios.delete(`${apiBaseUrl}/api/users/profile`, {
         withCredentials: true,
       });
       alert('Account deleted successfully');
@@ -107,7 +108,7 @@ const ProfileScreen = () => {
 
   const handleFollow = async () => {
     try {
-      const response = await axios.put(`/api/users/follow/${profileUser._id}`, {}, { withCredentials: true });
+      const response = await axios.put(`${apiBaseUrl}/api/users/follow/${profileUser._id}`, {}, { withCredentials: true });
       alert('Followed successfully');
       dispatch(setUser({ ...loggedInUser, following: response.data.following }));
     } catch (error) {
@@ -118,7 +119,7 @@ const ProfileScreen = () => {
   
   const handleUnfollow = async () => {
     try {
-      const response = await axios.put(`/api/users/unfollow/${profileUser._id}`, {}, { withCredentials: true });
+      const response = await axios.put(`${apiBaseUrl}/api/users/unfollow/${profileUser._id}`, {}, { withCredentials: true });
       alert('Unfollowed successfully');
       dispatch(setUser({ ...loggedInUser, following: response.data.following }));
     } catch (error) {

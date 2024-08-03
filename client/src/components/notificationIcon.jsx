@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import '../assets/style/NotificationIcon.css';
+import apiBaseUrl from '../constants';
 
 const NotificationIcon = () => {
   const [notifications, setNotifications] = useState([]);
@@ -12,7 +13,7 @@ const NotificationIcon = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const { data } = await axios.get('/api/notification', {
+        const { data } = await axios.get(`${apiBaseUrl}/api/notification`, {
           headers: { Authorization: `Bearer ${auth.user.token}` },
         });
         setNotifications(data);
@@ -34,7 +35,7 @@ const NotificationIcon = () => {
 
   const markNotificationsAsRead = async () => {
     try {
-      await axios.put('/api/notification/mark-read', {}, {
+      await axios.put(`${apiBaseUrl}/api/notification/mark-read`, {}, {
         headers: { Authorization: `Bearer ${auth.user.token}` },
       });
       setUnreadCount(0);
