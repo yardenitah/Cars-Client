@@ -8,7 +8,7 @@ import '../assets/style/Forum.css';
 const Forum = () => {
   const [forumPosts, setForumPosts] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [category, setCategory] = useState(''); // State to hold selected category
+  const [category, setCategory] = useState('');
   const auth = useSelector((state) => state.auth);
 
   const fetchForumPosts = async (category = '') => {
@@ -62,7 +62,7 @@ const Forum = () => {
           <option value="Problem">Problem</option>
         </select>
       </div>
-      <ForumPostList forumPosts={forumPosts} setForumPosts={setForumPosts} />
+      <ForumPostList forumPosts={forumPosts} setForumPosts={setForumPosts} fetchForumPosts={fetchForumPosts} />
     </div>
   );
 };

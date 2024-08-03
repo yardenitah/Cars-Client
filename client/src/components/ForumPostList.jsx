@@ -1,11 +1,10 @@
-// client/src/components/ForumPostList.jsx
 import React, { useState } from 'react';
 import CommentList from './commentList';
 import CommentForm from './commentForm';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
-const ForumPostList = ({ forumPosts, setForumPosts }) => {
+const ForumPostList = ({ forumPosts, setForumPosts, fetchForumPosts }) => {
   const auth = useSelector((state) => state.auth);
   const [editPost, setEditPost] = useState(null);
   const [editContent, setEditContent] = useState('');
@@ -14,7 +13,6 @@ const ForumPostList = ({ forumPosts, setForumPosts }) => {
     const updatedPosts = forumPosts.map(post =>
       post._id === forumPostId ? { ...post, comments } : post
     );
-    console.log("Forum Post List - Updated Posts:", updatedPosts);
     setForumPosts(updatedPosts);
   };
 
@@ -49,6 +47,7 @@ const ForumPostList = ({ forumPosts, setForumPosts }) => {
       console.error('Error editing post:', error);
     }
   };
+
   const handleLikePost = async (postId) => {
     try {
       const { data: updatedPost } = await axios.put(`/api/forum/${postId}/like`, {}, {
@@ -59,6 +58,18 @@ const ForumPostList = ({ forumPosts, setForumPosts }) => {
       console.error("Error liking post:", error);
     }
   };
+
+  const handleStickPost = async (postId, isSticky) => {
+    try {
+      const { data: updatedPost } = await axios.put(`/api/forum/${postId}`, { is_sticky: isSticky }, {
+        headers: { Authorization: `Bearer ${auth.user.token}` },
+      });
+      fetchForumPosts(); // Re-fetch forum posts to update the order
+    } catch (error) {
+      console.error("Error sticking post:", error);
+    }
+  };
+
   return (
     <div className="forum-post-list">
       {forumPosts.length === 0 ? (
@@ -83,6 +94,9 @@ const ForumPostList = ({ forumPosts, setForumPosts }) => {
                   <>
                     <button onClick={() => handleEditPost(post)}>Edit</button>
                     <button onClick={() => handleDeletePost(post._id)}>Delete</button>
+                    <button onClick={() => handleStickPost(post._id, !post.is_sticky)}>
+                      {post.is_sticky ? 'Unstick' : 'Stick'}
+                    </button>
                   </>
                 )}
               </>
