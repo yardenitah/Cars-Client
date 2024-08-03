@@ -1,5 +1,6 @@
+// src/__Tests__/App.test.js
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen } from './test-utils';
 import App from '../App';
 
 // Mock components that are imported in App
