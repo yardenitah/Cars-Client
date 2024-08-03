@@ -23,6 +23,7 @@ if (user) {
   }
 }
 root.render(
+  
   <React.StrictMode>
     <Provider store = {store}> {/* Wrap the App with AuthProvider */}
       <AuthProvider>

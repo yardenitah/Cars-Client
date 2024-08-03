@@ -1,19 +1,22 @@
-// client/src/components/NotificationIcon.jsx
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
-import '../assets/style/Notification.css'; // Make sure this path is correct
+import axios from 'axios';
+import '../assets/style/NotificationIcon.css';
+
 const NotificationIcon = () => {
   const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [showNotifications, setShowNotifications] = useState(false);
   const auth = useSelector((state) => state.auth);
 
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const { data } = await axios.get('/api/notifications', {
+        const { data } = await axios.get('/api/notification', {
           headers: { Authorization: `Bearer ${auth.user.token}` },
         });
         setNotifications(data);
+        setUnreadCount(data.filter(notification => !notification.read).length);
       } catch (error) {
         console.error('Error fetching notifications:', error);
       }
@@ -22,20 +25,47 @@ const NotificationIcon = () => {
     fetchNotifications();
   }, [auth.user.token]);
 
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
+  const toggleNotifications = async () => {
+    setShowNotifications(!showNotifications);
+    if (!showNotifications) {
+      await markNotificationsAsRead();
+    }
+  };
 
+  const markNotificationsAsRead = async () => {
+    try {
+      await axios.put('/api/notification/mark-read', {}, {
+        headers: { Authorization: `Bearer ${auth.user.token}` },
+      });
+      setUnreadCount(0);
+    } catch (error) {
+      console.error('Error marking notifications as read:', error);
+    }
+  };
+  const getNotificationMessage = (notification) => {
+    if (notification.type === 'follow') {
+      return `${notification.sender.userName} followed your profile`;
+    } else {
+      return `${notification.sender.userName} ${notification.type}ed your ${notification.post ? 'post' : 'comment'}`;
+    }
+  };
   return (
-    <div className="notification-icon">
+    <div className={`notification-icon ${unreadCount > 0 ? 'has-notifications' : ''}`} style={{ backgroundColor: 'black', padding: '5px' }} onClick={toggleNotifications}>
       <i className="fas fa-bell"></i>
       {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
-      <div className="dropdown">
-        {notifications.map((notification) => (
-          <div key={notification._id} className={`notification ${notification.isRead ? '' : 'unread'}`}>
-            {notification.message}
-            <small>{new Date(notification.createdAt).toLocaleString()}</small>
-          </div>
-        ))}
-      </div>
+      {showNotifications && (
+        <div className="notification-list">
+          {notifications.length === 0 ? (
+            <p>No notifications</p>
+          ) : (
+            notifications.map((notification) => (
+              <div key={notification._id} className="notification-item">
+                <p>{getNotificationMessage(notification)}</p>
+              </div>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 };

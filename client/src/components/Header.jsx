@@ -36,6 +36,9 @@ const Header = () => {
             <Nav className="ms-auto">
             {auth.isAuthenticated ? (
                 <>
+                  <Nav.Link>
+                      <NotificationIcon />
+                  </Nav.Link>
                   <LinkContainer to="/forum">
                     <Nav.Link>
                       <i className="fas fa-comments"></i> Forum
@@ -46,7 +49,6 @@ const Header = () => {
                       <i className="fas fa-user"></i> {auth.user.userName}
                     </Nav.Link>
                   </LinkContainer>
-                  <NotificationIcon />
                   <Nav.Link onClick={logoutHandler}>
                     <i className="fas fa-sign-out-alt"></i> Logout
                   </Nav.Link>
