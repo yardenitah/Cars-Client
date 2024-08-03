@@ -20,7 +20,7 @@ const WelcomeScreen = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const { data } = await axios.get(`${apiBaseUrl}/api/posts`);
+        const { data } = await axios.get(`${apiBaseUrl}/api/posts` ,{ withCredentials: True });
         setPosts(data);
       } catch (error) {
         console.error('Error fetching posts:', error);
