@@ -1,5 +1,5 @@
 // client/src/App.js
-import {useEffect,React} from "react";
+import React,{useEffect} from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { Container } from "react-bootstrap";
