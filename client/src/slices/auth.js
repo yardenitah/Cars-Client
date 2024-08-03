@@ -2,6 +2,8 @@
 import axios from 'axios';
 import { setUser, clearUser } from '../slices/authSlice'; // Adjust the import path as necessary
 import apiBaseUrl from '../constants';
+axios.defaults.withCredentials = true;
+
 const loadUser = () => async (dispatch) => {
   try {
     const response = await axios.get(`${apiBaseUrl}/api/users/profile`, { withCredentials: true });

@@ -6,6 +6,7 @@ import { clearUser, setUser } from '../slices/authSlice';
 import UploadForm from '../components/uploadForm';
 import '../assets/style/profileScreen.css';
 import apiBaseUrl from '../constants';
+axios.defaults.withCredentials = true;
 
 const ProfileScreen = () => {
   const { userId } = useParams();

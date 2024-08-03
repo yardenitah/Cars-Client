@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import apiBaseUrl from '../constants';
+axios.defaults.withCredentials = true;
 
 const UploadForm = ({ setImg }) => {
   const [file, setFile] = useState(null);

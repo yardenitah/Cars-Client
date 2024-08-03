@@ -4,6 +4,7 @@ import CommentForm from './commentForm';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import apiBaseUrl from '../constants';
+axios.defaults.withCredentials = true;
 
 const ForumPostList = ({ forumPosts, setForumPosts, fetchForumPosts }) => {
   const auth = useSelector((state) => state.auth);

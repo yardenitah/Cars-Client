@@ -4,6 +4,7 @@ import ForumPostList from '../components/ForumPostList';
 import ForumPostForm from '../components/ForumPostForm';
 import { useSelector } from 'react-redux';
 import '../assets/style/Forum.css';
+axios.defaults.withCredentials = true;
 
 const Forum = () => {
   const [forumPosts, setForumPosts] = useState([]);

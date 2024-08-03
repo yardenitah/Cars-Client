@@ -9,6 +9,8 @@ import { useAuth } from '../context/AuthContext';
 import '../assets/style/welcomeScreen.css';
 import apiBaseUrl from '../constants';
 
+axios.defaults.withCredentials = true;
+
 const WelcomeScreen = () => {
   const [posts, setPosts] = useState([]);
   const [events, setEvents] = useState([]);

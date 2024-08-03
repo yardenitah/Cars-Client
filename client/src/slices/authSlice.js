@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import apiBaseUrl from '../constants';
+axios.defaults.withCredentials = true;
 
 export const loadUser = createAsyncThunk('auth/loadUser', async () => {
   const response = await axios.get(`${apiBaseUrl}/api/users/profile`, { withCredentials: true });

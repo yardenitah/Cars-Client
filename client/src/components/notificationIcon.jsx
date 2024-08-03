@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import '../assets/style/NotificationIcon.css';
 import apiBaseUrl from '../constants';
+axios.defaults.withCredentials = true;
 
 const NotificationIcon = () => {
   const [notifications, setNotifications] = useState([]);
