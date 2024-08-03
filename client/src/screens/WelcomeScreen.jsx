@@ -1,15 +1,18 @@
-// client/src/screens/WelcomeScreen.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PostList from '../components/PostList';
 import PostForm from '../components/PostForm';
 import FeedbackForm from '../components/FeedbackForm';
+import EventList from '../components/eventList';
+import EventForm from '../components/eventForm';
 import { useAuth } from '../context/AuthContext';
 import '../assets/style/welcomeScreen.css';
 
 const WelcomeScreen = () => {
   const [posts, setPosts] = useState([]);
+  const [events, setEvents] = useState([]);
   const [showPostForm, setShowPostForm] = useState(false);
+  const [showEventForm, setShowEventForm] = useState(false);
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
   const { user } = useAuth();
 
@@ -23,7 +26,17 @@ const WelcomeScreen = () => {
       }
     };
 
+    const fetchEvents = async () => {
+      try {
+        const { data } = await axios.get('/api/events');
+        setEvents(data);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
+
     fetchPosts();
+    fetchEvents();
   }, []);
 
   const submitFeedback = async (content) => {
@@ -85,6 +98,49 @@ const WelcomeScreen = () => {
     }
   };
 
+  const addEvent = async (newEvent) => {
+    const formData = new FormData();
+    formData.append('title', newEvent.title);
+    formData.append('description', newEvent.description);
+    formData.append('date', newEvent.date);
+    formData.append('image', newEvent.img);
+
+    try {
+      const { data } = await axios.post('/api/events', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      setEvents([...events, data]);
+      setShowEventForm(false);
+      alert('Event submitted successfully');
+    } catch (error) {
+      alert('Error submitting event');
+    }
+  };
+
+  const editEvent = async (eventId, updatedEvent) => {
+    try {
+      const { data } = await axios.put(`/api/events/${eventId}`, updatedEvent, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      setEvents((prevEvents) => prevEvents.map((e) => (e._id === eventId ? data : e)));
+      alert('Event updated successfully');
+    } catch (error) {
+      console.error('Error updating event:', error);
+      alert('Error updating event');
+    }
+  };
+
+  const deleteEvent = async (eventId) => {
+    try {
+      await axios.delete(`/api/events/${eventId}`);
+      setEvents((prevEvents) => prevEvents.filter((event) => event._id !== eventId));
+      alert('Event deleted successfully');
+    } catch (error) {
+      console.error('Error deleting event:', error);
+      alert('Error deleting event');
+    }
+  };
+
   return (
     <div className="welcome-screen">
       <div className="content">
@@ -102,6 +158,16 @@ const WelcomeScreen = () => {
           deletePost={deletePost}
           editPost={editPost}
         />
+      </div>
+      <div className="content">
+        <h1>
+          Events
+          <button onClick={() => setShowEventForm(!showEventForm)} className="add-btn">
+            +
+          </button>
+        </h1>
+        {showEventForm && <EventForm addEvent={addEvent} />}
+        <EventList events={events} user={user} editEvent={editEvent} deleteEvent={deleteEvent} />
       </div>
       <div className="feedback-section">
         <h2>
