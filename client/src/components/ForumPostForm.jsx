@@ -1,7 +1,7 @@
 // client/src/components/ForumPostForm.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import apiBaseUrl from '../constants';
 const ForumPostForm = ({ fetchForumPosts }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -9,7 +9,7 @@ const ForumPostForm = ({ fetchForumPosts }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/forum', { title, content });
+      await axios.post(`${apiBaseUrl}/api/forum`, { title, content });
       setTitle('');
       setContent('');
       fetchForumPosts();
