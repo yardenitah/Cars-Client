@@ -25,7 +25,7 @@ const ProfileScreen = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const { data } = await axios.get(`${apiBaseUrl}/api/users/${userId}`);
+        const { data } = await axios.get(`${apiBaseUrl}/api/users/${userId}`,{withCredentials : true});
         setProfileUser(data);
         setUserName(data.userName);
         setEmail(data.email);
