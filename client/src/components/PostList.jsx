@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import apiBaseUrl from '../constants';
 const PostList = ({ posts, user, likePost, deletePost, editPost }) => {
   const [editingPostId, setEditingPostId] = useState(null);
   const [editingPostContent, setEditingPostContent] = useState("");
@@ -50,7 +50,7 @@ const PostList = ({ posts, user, likePost, deletePost, editPost }) => {
           ) : (
             <>
               <p>{post.content}</p>
-              {post.image && <img src={`/api/uploads/${post.image}`} alt="Post" />}
+              {post.image && <img src={`${apiBaseUrl}/api/uploads/${post.image}`} alt="Post" />}
               <p>Likes: {post.likes.length}</p>
               <button onClick={() => likePost(post._id)}>
                 {post.likes.includes(user._id) ? 'Unlike' : 'Like'}

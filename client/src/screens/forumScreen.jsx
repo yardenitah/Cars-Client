@@ -4,6 +4,7 @@ import ForumPostList from '../components/ForumPostList';
 import ForumPostForm from '../components/ForumPostForm';
 import { useSelector } from 'react-redux';
 import '../assets/style/Forum.css';
+import apiBaseUrl from '../constants';
 axios.defaults.withCredentials = true;
 
 const Forum = () => {
@@ -14,7 +15,7 @@ const Forum = () => {
 
   const fetchForumPosts = async (category = '') => {
     try {
-      const { data } = await axios.get('/api/forum', {
+      const { data } = await axios.get(`${apiBaseUrl}/api/forum`, {
         params: { category },
       });
       console.log("Forum - Fetched Posts:", data);

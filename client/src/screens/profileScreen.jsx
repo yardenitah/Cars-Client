@@ -143,7 +143,7 @@ const ProfileScreen = () => {
           <h1>{profileUser.userName}</h1>
           <p>Email: {profileUser.email}</p>
           <img 
-            src={`/api/uploads/${profileUser.img}`} 
+            src={`${apiBaseUrl}/api/uploads/${profileUser.img}`} 
             alt="Profile" 
             className="profile-pic"
             onError={handleImageError}

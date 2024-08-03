@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import apiBaseUrl from '../constants';
 const EventList = ({ events, user, editEvent, deleteEvent }) => {
   const [editingEventId, setEditingEventId] = useState(null);
   const [editingEventDetails, setEditingEventDetails] = useState({
@@ -78,7 +78,7 @@ const EventList = ({ events, user, editEvent, deleteEvent }) => {
               <h3>{event.title}</h3>
               <p>{event.description}</p>
               <p>{new Date(event.date).toLocaleDateString()}</p>
-              {event.image && <img src={`/api/uploads/${event.image}`} alt="Event" />}
+              {event.image && <img src={`${apiBaseUrl}/api/uploads/${event.image}`} alt="Event" />}
               {user && event.user && user._id === event.user._id && (
                 <>
                   <button onClick={() => handleEditClick(event)}>Edit</button>
