@@ -29,6 +29,7 @@ const LoginScreen = () => {
       });
       if (response.data.success) {
         dispatch(setUser(response.data));
+        console.log(response.data);
         navigate(`/welcome?name=${response.data.userName}`); // Navigate to the welcome screen with the user's name
       } else {
         setErrorMessage(response.data.message || 'Login failed. Please try again.');
