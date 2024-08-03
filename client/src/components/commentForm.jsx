@@ -10,13 +10,13 @@ const CommentForm = ({ forumPostId, updateComments }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data: newComment } = await axios.post(`/api/comments/${forumPostId}/comments`, { content, forumPostId }, {
+      const { data: newComment } = await axios.post(`${apiBaseUrl}/api/comments/${forumPostId}/comments`, { content, forumPostId }, {
         headers: {
           Authorization: `Bearer ${auth.user.token}`,
         },
       });
       setContent('');
-      const { data: comments } = await axios.get(`/api/comments/${forumPostId}/comments`);
+      const { data: comments } = await axios.get(`${apiBaseUrl}/api/comments/${forumPostId}/comments`);
       updateComments(forumPostId, comments);
     } catch (error) {
       console.error('Error creating comment:', error); // Log the error
