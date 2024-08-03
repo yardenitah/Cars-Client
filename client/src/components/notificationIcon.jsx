@@ -45,10 +45,13 @@ const NotificationIcon = () => {
     }
   };
   const getNotificationMessage = (notification) => {
+    if (!notification.sender) {
+      return 'Notification';
+    }
     if (notification.type === 'follow') {
-      return `${notification.sender.userName} followed your profile`;
+      return `${notification.sender?.userName ?? 'Someone'} followed your profile`;
     } else {
-      return `${notification.sender.userName} ${notification.type}ed your ${notification.post ? 'post' : 'comment'}`;
+      return `${notification.sender?.userName ?? 'Someone'} ${notification.type}ed your ${notification.post ? 'post' : 'comment'}`;
     }
   };
   return (
