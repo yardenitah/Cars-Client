@@ -1,9 +1,35 @@
-// client/src/components/PostList.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-// import '../assets/style/postList.css';
 
-const PostList = ({ posts, user, likePost, deletePost }) => {
+const PostList = ({ posts, user, likePost, deletePost, editPost }) => {
+  const [editingPostId, setEditingPostId] = useState(null);
+  const [editingPostContent, setEditingPostContent] = useState("");
+  const [editingPostImage, setEditingPostImage] = useState(null);
+
+  const handleEditClick = (post) => {
+    setEditingPostId(post._id);
+    setEditingPostContent(post.content);
+    setEditingPostImage(null); // Reset image on edit click
+  };
+
+  const handleEditChange = (e) => {
+    setEditingPostContent(e.target.value);
+  };
+
+  const handleImageChange = (e) => {
+    setEditingPostImage(e.target.files[0]);
+  };
+
+  const handleEditSubmit = (post) => {
+    const updatedPost = new FormData();
+    updatedPost.append('content', editingPostContent);
+    if (editingPostImage) {
+      updatedPost.append('image', editingPostImage);
+    }
+    editPost(post._id, updatedPost);
+    setEditingPostId(null);
+  };
+
   return (
     <ul>
       {posts.map((post) => (
@@ -11,30 +37,30 @@ const PostList = ({ posts, user, likePost, deletePost }) => {
           <Link to={`/profile/${post.user?._id}`}>
             <strong>{post.user?.userName}</strong>
           </Link>
-          <p>{post.content}</p>
-          {post.image && <img src={`/api/uploads/${post.image}`} alt="Post" />}
-          <p>Likes: {post.likes.length}</p>
-          <button onClick={() => likePost(post._id)}>
-            {post.likes.includes(user._id) ? 'Unlike' : 'Like'}
-          </button>          
-          {user && post.user ? (
+          {editingPostId === post._id ? (
             <>
-              {console.log('Logged-in user:', user)}
-              {console.log('Post user:', post.user)}
-              {user._id === post.user._id ? (
-                <>
-                  {console.log('Displaying delete button for post ID:', post._id)}
-                  <button onClick={() => deletePost(post._id)}>Delete</button>
-                </>
-              ) : (
-                console.log('Not displaying delete button for post ID:', post._id, 'because user._id does not match post.user._id')
-              )}
+              <textarea
+                value={editingPostContent}
+                onChange={handleEditChange}
+              />
+              <input type="file" onChange={handleImageChange} />
+              <button onClick={() => handleEditSubmit(post)}>Save</button>
+              <button onClick={() => setEditingPostId(null)}>Cancel</button>
             </>
           ) : (
             <>
-              {console.log('User is:', user)}
-              {console.log('Post user is:', post.user)}
-              {console.log('Not displaying delete button for post ID:', post._id, 'because user or post.user is missing')}
+              <p>{post.content}</p>
+              {post.image && <img src={`/api/uploads/${post.image}`} alt="Post" />}
+              <p>Likes: {post.likes.length}</p>
+              <button onClick={() => likePost(post._id)}>
+                {post.likes.includes(user._id) ? 'Unlike' : 'Like'}
+              </button>
+              {user && post.user && user._id === post.user._id && (
+                <>
+                  <button onClick={() => handleEditClick(post)}>Edit</button>
+                  <button onClick={() => deletePost(post._id)}>Delete</button>
+                </>
+              )}
             </>
           )}
         </li>

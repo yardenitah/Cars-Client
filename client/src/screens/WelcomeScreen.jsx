@@ -52,9 +52,21 @@ const WelcomeScreen = () => {
     }
   };
 
+  const editPost = async (postId, updatedPost) => {
+    try {
+      const { data } = await axios.put(`/api/posts/${postId}`, updatedPost, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      setPosts((prevPosts) => prevPosts.map((p) => (p._id === postId ? data : p)));
+      alert('Post updated successfully');
+    } catch (error) {
+      console.error('Error updating post:', error);
+      alert('Error updating post');
+    }
+  };
+
   const likePost = async (id) => {
     try {
-      console.log('Liking post with ID:', id);
       const { data } = await axios.put(`/api/posts/${id}/like`);
       setPosts((prevPosts) => prevPosts.map((post) => (post._id === id ? data : post)));
     } catch (error) {
@@ -64,7 +76,6 @@ const WelcomeScreen = () => {
 
   const deletePost = async (id) => {
     try {
-      console.log('Attempting to delete post with ID:', id);
       await axios.delete(`/api/posts/${id}`);
       setPosts((prevPosts) => prevPosts.filter((post) => post._id !== id));
       alert('Post deleted successfully');
@@ -84,7 +95,13 @@ const WelcomeScreen = () => {
           </button>
         </h1>
         {showPostForm && <PostForm addPost={addPost} />}
-        <PostList posts={posts} user={user} likePost={likePost} deletePost={deletePost} />
+        <PostList
+          posts={posts}
+          user={user}
+          likePost={likePost}
+          deletePost={deletePost}
+          editPost={editPost}
+        />
       </div>
       <div className="feedback-section">
         <h2>
