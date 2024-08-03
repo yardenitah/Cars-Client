@@ -2,11 +2,16 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import store from '../store'; // Adjust the path to your store
 
 const renderWithProviders = (ui, { ...renderOptions } = {}) => {
   const Wrapper = ({ children }) => (
-    <Provider store={store}>{children}</Provider>
+    <Provider store={store}>
+      <BrowserRouter>
+        {children}
+      </BrowserRouter>
+    </Provider>
   );
   return render(ui, { wrapper: Wrapper, ...renderOptions });
 };
