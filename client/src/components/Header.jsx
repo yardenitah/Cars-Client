@@ -2,7 +2,7 @@
 import React from 'react'; // Add this line
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearUser } from '../slices/authSlice';
+import { clearUser,logoutUser } from '../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import NotificationIcon from './notificationIcon';
@@ -16,7 +16,9 @@ const Header = () => {
   const auth = useSelector((state) => state.auth);
 
   const logoutHandler = () => {
+    dispatch(logoutUser());
     dispatch(clearUser());
+    localStorage.removeItem('userToken');
     navigate('/');
   };
   return (

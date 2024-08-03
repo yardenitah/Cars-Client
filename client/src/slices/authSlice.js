@@ -6,8 +6,10 @@ export const loadUser = createAsyncThunk('auth/loadUser', async () => {
   console.log('loadUser response:', response.data);
   return response.data;
 });
-
-const initialState = {
+export const logoutUser = createAsyncThunk('auth/logoutUser', async () => {
+  await axios.post('/api/users/logout', {}, { withCredentials: true });
+});
+export const initialState = {
   user: null,
   isAuthenticated: false,
   status: 'idle', // Add status for loading state
@@ -21,11 +23,13 @@ const authSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
       state.isAuthenticated = true;
+      localStorage.setItem('user', JSON.stringify(action.payload)); // Save user to localStorage
       console.log('setUser:', action.payload);
     },
     clearUser: (state) => {
       state.user = null;
       state.isAuthenticated = false;
+      localStorage.removeItem('user'); // Clear user from localStorage
       console.log('clearUser');
     },
   },
@@ -45,6 +49,12 @@ const authSlice = createSlice({
         state.error = action.error.message;
         state.isAuthenticated = false;
         console.log('loadUser rejected:', action.error.message);
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.user = null;
+        state.isAuthenticated = false;
+        state.status = 'idle';
+        console.log('logoutUser fulfilled');
       });
   },
 });

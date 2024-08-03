@@ -14,7 +14,9 @@ const PostList = ({ posts, user, likePost, deletePost }) => {
           <p>{post.content}</p>
           {post.image && <img src={`/api/uploads/${post.image}`} alt="Post" />}
           <p>Likes: {post.likes.length}</p>
-          <button onClick={() => likePost(post._id)}>Like</button>
+          <button onClick={() => likePost(post._id)}>
+            {post.likes.includes(user._id) ? 'Unlike' : 'Like'}
+          </button>          
           {user && post.user ? (
             <>
               {console.log('Logged-in user:', user)}

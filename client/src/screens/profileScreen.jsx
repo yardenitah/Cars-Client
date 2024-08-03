@@ -109,37 +109,27 @@ const ProfileScreen = () => {
     try {
       const response = await axios.put(`/api/users/follow/${profileUser._id}`, {}, { withCredentials: true });
       alert('Followed successfully');
-      setProfileUser({ ...profileUser, following: response.data.following });
       dispatch(setUser({ ...loggedInUser, following: response.data.following }));
     } catch (error) {
-      console.error('Error following user:', error);
-      if (error.response && error.response.status === 401) {
-        alert('Unauthorized. Please log in again.');
-      } else {
-        alert('Error following user');
-      }
+      console.error('Error following user:', error.response ? error.response.data : error.message);
+      alert('Error following user');
     }
   };
-
+  
   const handleUnfollow = async () => {
     try {
       const response = await axios.put(`/api/users/unfollow/${profileUser._id}`, {}, { withCredentials: true });
       alert('Unfollowed successfully');
-      setProfileUser({ ...profileUser, following: response.data.following });
       dispatch(setUser({ ...loggedInUser, following: response.data.following }));
     } catch (error) {
-      console.error('Error unfollowing user:', error);
-      if (error.response && error.response.status === 401) {
-        alert('Unauthorized. Please log in again.');
-      } else {
-        alert('Error unfollowing user');
-      }
+      console.error('Error unfollowing user:', error.response ? error.response.data : error.message);
+      alert('Error unfollowing user');
     }
   };
   const handleImageError = (e) => {
     e.target.src = '../../uploads/defaultprofile.png';
   };
-  const isFollowing = loggedInUser?.following?.some(followedUserId => followedUserId.toString() === profileUser?._id.toString());
+  const isFollowing = loggedInUser?.following?.some(followedUser => followedUser._id === profileUser?._id);
   console.log('loggedInUser:', loggedInUser);
   console.log('profileUser:', profileUser);
   console.log('isFollowing:', isFollowing);
