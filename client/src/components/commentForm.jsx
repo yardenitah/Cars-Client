@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import apiBaseUrl from '../constants';
 
 const CommentForm = ({ forumPostId, updateComments }) => {
   const [content, setContent] = useState('');
