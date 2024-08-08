@@ -100,7 +100,16 @@ const WelcomeScreen = () => {
       alert('Error deleting post');
     }
   };
-
+  const sharePost = async (postId) => {
+    try {
+      const { data } = await axios.post(`${apiBaseUrl}/api/posts/${postId}/share`);
+      setPosts((prevPosts) => [...prevPosts, data]);
+      alert('Post shared successfully');
+    } catch (error) {
+      console.error('Error sharing post:', error);
+      alert('Error sharing post');
+    }
+  };
   const addEvent = async (newEvent) => {
     const formData = new FormData();
     formData.append('title', newEvent.title);
@@ -150,7 +159,7 @@ const WelcomeScreen = () => {
         <h1>
           Posts
           <button onClick={() => setShowPostForm(!showPostForm)} className="add-btn">
-            +
+           +
           </button>
         </h1>
         {showPostForm && <PostForm addPost={addPost} />}
@@ -160,6 +169,7 @@ const WelcomeScreen = () => {
           likePost={likePost}
           deletePost={deletePost}
           editPost={editPost}
+          sharePost={sharePost}
         />
       </div>
       <div className="content">

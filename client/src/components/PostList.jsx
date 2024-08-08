@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import apiBaseUrl from '../constants';
-const PostList = ({ posts, user, likePost, deletePost, editPost }) => {
+const PostList = ({ posts, user, likePost, deletePost, editPost,sharePost }) => {
+
   const [editingPostId, setEditingPostId] = useState(null);
   const [editingPostContent, setEditingPostContent] = useState("");
   const [editingPostImage, setEditingPostImage] = useState(null);
@@ -29,7 +30,9 @@ const PostList = ({ posts, user, likePost, deletePost, editPost }) => {
     editPost(post._id, updatedPost);
     setEditingPostId(null);
   };
-
+  const handleShare = async (post) => {
+    await sharePost(post._id);
+  };
   return (
     <ul>
       {posts.map((post) => (
@@ -37,6 +40,9 @@ const PostList = ({ posts, user, likePost, deletePost, editPost }) => {
           <Link to={`/profile/${post.user?._id}`}>
             <strong>{post.user?.userName}</strong>
           </Link>
+          {post.sharedFrom && (
+            <p>Shared from: <Link to={`/profile/${post.sharedFrom.user?._id}`}>{post.sharedFrom.user?.userName}</Link></p>
+          )}
           {editingPostId === post._id ? (
             <>
               <textarea
@@ -61,6 +67,7 @@ const PostList = ({ posts, user, likePost, deletePost, editPost }) => {
                   <button onClick={() => deletePost(post._id)}>Delete</button>
                 </>
               )}
+              <button onClick={() => handleShare(post)}>Share</button>
             </>
           )}
         </li>
