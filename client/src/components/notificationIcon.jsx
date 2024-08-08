@@ -1,4 +1,3 @@
-// /Users/yrdnqldrwn/Desktop/Client/Cars-Client/client/src/components/notificationIcon.jsx
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -53,6 +52,18 @@ const NotificationIcon = () => {
     }
   };
 
+  const clearNotifications = async () => {
+    try {
+      await axios.delete(`${apiBaseUrl}/api/notification/clear`, {
+        headers: { Authorization: `Bearer ${auth.user.token}` },
+      });
+      setNotifications([]);
+      setUnreadCount(0);
+    } catch (error) {
+      console.error("Error clearing notifications:", error);
+    }
+  };
+
   const getNotificationMessage = (notification) => {
     if (!notification.sender) {
       return "Notification";
@@ -69,28 +80,35 @@ const NotificationIcon = () => {
   };
 
   return (
-    <div
-      className={`notification-icon ${
-        unreadCount > 0 ? "has-notifications" : ""
-      }`}
-      onClick={toggleNotifications}
-    >
-      <IoIosNotifications style={{ fontSize: "24px" }} />
-      {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
-      {showNotifications && (
-        <div className="notification-list">
-          {notifications.length === 0 ? (
-            <p>No notifications</p>
-          ) : (
-            notifications.map((notification) => (
-              <div key={notification._id} className="notification-item">
-                <p>{getNotificationMessage(notification)}</p>
-              </div>
-            ))
-          )}
-        </div>
-      )}
-    </div>
+    <>
+      <div
+        className={`notification-icon ${
+          unreadCount > 0 ? "has-notifications" : ""
+        }`}
+        onClick={toggleNotifications}
+      >
+        <IoIosNotifications style={{ fontSize: "24px" }} />
+        {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
+        {showNotifications && (
+          <div className="notification-list">
+            {notifications.length === 0 ? (
+              <p>No notifications</p>
+            ) : (
+              <>
+                {notifications.map((notification) => (
+                  <div key={notification._id} className="notification-item">
+                    <p>{getNotificationMessage(notification)}</p>
+                  </div>
+                ))}
+                <button onClick={clearNotifications} className="clear-button">
+                  Clear Notifications
+                </button>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
